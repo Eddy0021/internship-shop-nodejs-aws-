@@ -1,0 +1,11 @@
+{
+  "scripts":{
+    "aws:deploy": "serverless deploy",
+    "aws:remove": "serverless remove"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.10",
+    "esbuild": "^0.20.2",
+    "serverless-esbuild": "^1.52.1"
+  }
+}

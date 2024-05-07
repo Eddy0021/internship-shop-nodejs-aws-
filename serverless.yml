@@ -1,0 +1,27 @@
+service: shop-nodejs-aws
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+  stage: dev
+  region: eu-north-1
+
+functions:
+  getProducts:
+    handler: handlers/getProducts.getProducts
+    events:
+      - httpApi:
+          method: GET
+          path: /products
+  getProduct:
+    handler: handlers/getProduct.getProduct
+    events:
+      - httpApi:
+          method: GET
+          path: /products/{productId}
+
+plugins:
+  - serverless-esbuild
