@@ -16,12 +16,16 @@ functions:
       - httpApi:
           method: GET
           path: /products
+    url:
+      cors: true
   getProduct:
     handler: handlers/getProduct.getProduct
     events:
       - httpApi:
           method: GET
           path: /products/{productId}
+    url:
+      cors: true
 
 plugins:
   - serverless-esbuild
