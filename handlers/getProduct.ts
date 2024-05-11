@@ -1,18 +1,20 @@
 'use strict';
 
-import products from '../data/products.json';
 import { handleResponse } from '../utils/handleResponse';
+import { getProductById } from '../databaseServices/dynamodbService';
 
-export async function getProduct (event) {
+export const getProductHandler = async (event: any) => {
   try {
-    const { productId } = event.pathParameters;
-    const product = products.find((item) => item.id === productId);
+    const { productId } = event.pathParameters || {};
 
-    if(!product) return handleResponse(404, "Product not found." );
+    // Get product details from DynamoDB
+    const product = await getProductById(productId);
 
-    return handleResponse(200, JSON.stringify(product))
+    if (!product) return handleResponse(404, 'Product not found.');
+
+    return handleResponse(200, JSON.stringify(product));
   } catch (error) {
     console.error('Error:', error);
-    return handleResponse(500, 'Internal server error');
+    return handleResponse(500, error.message || 'Internal server error');
   }
 };

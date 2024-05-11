@@ -2,16 +2,39 @@ service: shop-nodejs-aws
 
 frameworkVersion: "3"
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
-
   stage: dev
   region: eu-north-1
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
+    Resource: "arn:aws:dynamodb:eu-north-1:211125442645:table/products"
+  - Effect: "Allow"
+    Action:
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
+    Resource: "arn:aws:dynamodb:eu-north-1:211125442645:table/stock"
+  environment:
+    PRODUCTS_TABLE: ${env:PRODUCTS_TABLE}
+    STOCK_TABLE: ${env:STOCK_TABLE}
 
 functions:
   getProducts:
-    handler: handlers/getProducts.getProducts
+    handler: handlers/getProducts.getProductsHandler
     events:
       - httpApi:
           method: GET
@@ -19,13 +42,52 @@ functions:
     url:
       cors: true
   getProduct:
-    handler: handlers/getProduct.getProduct
+    handler: handlers/getProduct.getProductHandler
     events:
       - httpApi:
           method: GET
           path: /products/{productId}
     url:
       cors: true
+  createProduct:
+    handler: handlers/createProduct.createProductHandler
+    events:
+      - httpApi:
+          method: POST
+          path: /products
+    url:
+      cors: true
+
+resources:
+  Resources:
+    ProductsTable:
+      Type: AWS::DynamoDB::Table     
+      Properties:
+        TableName: ${env:PRODUCTS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+    StockTable:
+      Type: AWS::DynamoDB::Table     
+      Properties:
+        TableName: ${env:STOCK_TABLE}
+        AttributeDefinitions:
+          - AttributeName: product_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: product_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
 
 plugins:
   - serverless-esbuild
+  - serverless-dotenv-plugin

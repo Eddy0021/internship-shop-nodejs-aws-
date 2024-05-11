@@ -1,48 +1,33 @@
 [
     {
-      "id": "1",
-      "name": "Smartphone",
-      "brand": "ABC",
-      "price": 499.99,
-      "description": "A powerful smartphone with advanced features.",
-      "image": "https://example.com/images/smartphone.jpg",
-      "category": "Electronics"
+      "id": "",
+      "title": "Product 1",
+      "description": "A powerful product version 1.",
+      "price": 100
     },
     {
-      "id": "2",
-      "name": "Laptop",
-      "brand": "XYZ",
-      "price": 999.99,
-      "description": "A high-performance laptop for work and entertainment.",
-      "image": "https://example.com/images/laptop.jpg",
-      "category": "Electronics"
+      "id": "",
+      "title": "Product 2",
+      "description": "A powerful product version 1.",
+      "price": 50
     },
     {
-      "id": "3",
-      "name": "Running Shoes",
-      "brand": "Nike",
-      "price": 129.99,
-      "description": "Comfortable and durable shoes for running enthusiasts.",
-      "image": "https://example.com/images/running_shoes.jpg",
-      "category": "Sports"
+      "id": "",
+      "title": "Product 3",
+      "description": "A powerful product version 1.",
+      "price": 25
     },
     {
-      "id": "4",
-      "name": "Wireless Headphones",
-      "brand": "Sony",
-      "price": 149.99,
-      "description": "Immersive sound quality with wireless convenience.",
-      "image": "https://example.com/images/wireless_headphones.jpg",
-      "category": "Electronics"
+      "id": "",
+      "title": "Product 4",
+      "description": "A powerful product version 1.",
+      "price": 75
     },
     {
-      "id": "5",
-      "name": "Coffee Maker",
-      "brand": "Keurig",
-      "price": 79.99,
-      "description": "Brew your favorite coffee with ease.",
-      "image": "https://example.com/images/coffee_maker.jpg",
-      "category": "Home & Kitchen"
+      "id": "",
+      "title": "Product 5",
+      "description": "A powerful product version 1.",
+      "price": 10
     }
   ]
   
