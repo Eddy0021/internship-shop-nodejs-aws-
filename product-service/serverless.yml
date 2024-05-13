@@ -18,7 +18,7 @@ provider:
       - dynamodb:PutItem
       - dynamodb:UpdateItem
       - dynamodb:DeleteItem
-    Resource: "arn:aws:dynamodb:eu-north-1:211125442645:table/products"
+    Resource: "arn:aws:dynamodb:${env:REGION}:${env:ACCOUNT_ID}:table/products"
   - Effect: "Allow"
     Action:
       - dynamodb:Query
@@ -27,7 +27,11 @@ provider:
       - dynamodb:PutItem
       - dynamodb:UpdateItem
       - dynamodb:DeleteItem
-    Resource: "arn:aws:dynamodb:eu-north-1:211125442645:table/stock"
+    Resource: "arn:aws:dynamodb:${env:REGION}:${env:ACCOUNT_ID}:table/stock"
+  - Effect: "Allow"
+    Action:
+      - sns:Publish
+    Resource: "arn:aws:sns:${env:REGION}:${env:ACCOUNT_ID}:MyCustomTopic"
   environment:
     PRODUCTS_TABLE: ${env:PRODUCTS_TABLE}
     STOCK_TABLE: ${env:STOCK_TABLE}
@@ -57,6 +61,13 @@ functions:
           path: /products
     url:
       cors: true
+  catalogBatchProcess:
+    handler: handlers/catalogBatchProcess.catalogBatchProcessHandler
+    events:
+      - sqs:
+          arn: 
+            Fn::GetAtt: [catalogItemsQueue, Arn]
+          batchSize: 5
 
 resources:
   Resources:
@@ -87,6 +98,24 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
+    
+    catalogItemsQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "catalogItemsQueue"
+
+    createProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: MyCustomTopic
+
+    productSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${env:SNS_EMAIL}
+        Protocol: email
+        TopicArn:
+          Ref: createProductTopic
 
 plugins:
   - serverless-esbuild
