@@ -1,0 +1,53 @@
+service: import-service
+
+frameworkVersion: "3"
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  region: ${env:REGION}
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - "s3:ListBucket"
+    Resource: "arn:aws:s3:::${env:BUCKET_NAME}"
+  - Effect: "Allow"
+    Action:
+      - "s3:*"
+    Resource: "arn:aws:s3:::${env:BUCKET_NAME}/uploaded/*"
+  - Effect: "Allow"
+    Action:
+      - "sqs:SendMessage"
+    Resource: "arn:aws:sqs:${env:REGION}:${env:ACCOUNT_ID}:catalogItemsQueue"
+  environment:
+    BUCKET_NAME: ${env:BUCKET_NAME}
+    FRONT_URL: ${env:FRONT_URL}
+    REGION: ${env:REGION}
+
+functions:
+  importProductsFile:
+    handler: handlers/importProductsFile.importProductsFileHandler
+    events:
+      - httpApi:
+          method: GET
+          path: /import
+    url:
+      cors: true
+  importFileParser:
+    handler: handlers/importFileParser.importFileParserHandler
+    events:
+      - s3:
+          bucket: ${env:BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploaded/
+          existing: true
+    url:
+      cors: true
+
+plugins:
+  - serverless-esbuild
+  - serverless-dotenv-plugin
