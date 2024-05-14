@@ -18,6 +18,10 @@ provider:
     Action:
       - "s3:*"
     Resource: "arn:aws:s3:::${env:BUCKET_NAME}/uploaded/*"
+  - Effect: "Allow"
+    Action:
+      - "sqs:SendMessage"
+    Resource: "arn:aws:sqs:${env:REGION}:${env:ACCOUNT_ID}:catalogItemsQueue"
   environment:
     BUCKET_NAME: ${env:BUCKET_NAME}
     FRONT_URL: ${env:FRONT_URL}
