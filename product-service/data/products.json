@@ -1,0 +1,33 @@
+[
+    {
+      "id": "",
+      "title": "Product 1",
+      "description": "A powerful product version 1.",
+      "price": 100
+    },
+    {
+      "id": "",
+      "title": "Product 2",
+      "description": "A powerful product version 1.",
+      "price": 50
+    },
+    {
+      "id": "",
+      "title": "Product 3",
+      "description": "A powerful product version 1.",
+      "price": 25
+    },
+    {
+      "id": "",
+      "title": "Product 4",
+      "description": "A powerful product version 1.",
+      "price": 75
+    },
+    {
+      "id": "",
+      "title": "Product 5",
+      "description": "A powerful product version 1.",
+      "price": 10
+    }
+  ]
+  
