@@ -42,9 +42,10 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: /products
+          path: /products        
     url:
       cors: true
+    
   getProduct:
     handler: handlers/getProduct.getProductHandler
     events:
