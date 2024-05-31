@@ -26,6 +26,18 @@ provider:
     BUCKET_NAME: ${env:BUCKET_NAME}
     FRONT_URL: ${env:FRONT_URL}
     REGION: ${env:REGION}
+  httpApi: {
+    cors: true,
+    authorizers: {
+      httpApiRequestAuthorizer: {
+        name: 'httpApiRequestAuthorizer',
+        functionArn: 'arn:aws:lambda:${env:REGION}:${env:ACCOUNT_ID}:function:authorization-service-dev-basicAuthorizer',
+        type: 'request',
+        enableSimpleResponses: true,
+        payloadVersion: '2.0',
+      }
+    }
+  }
 
 functions:
   importProductsFile:
@@ -34,6 +46,9 @@ functions:
       - httpApi:
           method: GET
           path: /import
+          authorizer: {
+            name: 'httpApiRequestAuthorizer'
+          }
     url:
       cors: true
   importFileParser:

@@ -1,0 +1,23 @@
+service: authorization-service
+
+frameworkVersion: "3"
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  region: ${env:REGION}
+  environment:
+      Eddy0021: ${env:Eddy0021}
+      REGION: ${env:REGION}
+      FRONT_URL: ${env:FRONT_URL}
+
+functions:
+  basicAuthorizer:
+    handler: handlers/basicAuthorizer.basicAuthorizerHandler
+
+plugins:
+  - serverless-esbuild
+  - serverless-dotenv-plugin

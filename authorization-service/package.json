@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-esbuild": "^1.52.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
